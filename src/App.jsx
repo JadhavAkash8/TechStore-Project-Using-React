@@ -7,12 +7,69 @@ import { useState, useEffect } from "react";
 function App() {
   
     const allBrands = [...new Set(products.map(p=>p.brand))];
+    //state
+    //Cart- array of products in cart
+    const [cartItems, setCartItems] = useState(()=>{
+      const savedCart = localStorage.getItem("techstore-cart");
 
-    const [cartItems, setCartItems] = useState([]);
-    const [wishlist, setWishlist] = useState([]);
+      if(savedCart)
+      {
+        try{
+          return JSON.parse(savedCart);
+        }catch (error){
+          console.error("Problem!!!",error);
+          return [];
+        }
+      }
+      return [];
+    });
+
+      useEffect(()=>{
+        localStorage.setItem("techstore-cart",JSON.stringify(cartItems));
+      },[cartItems]);
+
+
+
+
+
+
+
+
+
+
+
+    //Wishlist
+    const [wishlist, setWishlist] = useState(()=>{
+      const savedWishlist = localStorage.getItem("techstore-wishList");
+
+      if(savedWishlist)
+      {
+        try{
+          return JSON.parse(savedWishlist);
+        }catch (error){
+          console.error("Problem!!!",error);
+          return [];
+        }
+      }
+      return [];
+    });
+
+      useEffect(()=>{
+        localStorage.setItem("techstore-wishList",JSON.stringify(wishlist));
+      },[wishlist]);
+
+
+    
+    //searchbot
     const [searchTerm, setSearchTerm] = useState("");
+    
+    //Brand filter
     const [selectBrand, setSelectBrand] = useState("All");
+    
+    //Sort
     const [sortBy, setSortBy] = useState("");
+    
+    //
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [theme, setTheme] = useState(() => {
       return localStorage.getItem("techstore-theme") || "dark";
